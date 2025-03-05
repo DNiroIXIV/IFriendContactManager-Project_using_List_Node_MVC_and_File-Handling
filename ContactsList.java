@@ -34,11 +34,11 @@ public class ContactsList {
 		if (index >= 0 && index <= size()) {
 			if (index == 0) {
 				return addFirst(contact);
-			}else{
+			} else {
 				Node node = new Node(contact);
 				int i = 0;
 				Node tempNode = firstNode;
-				while (i < index-1) {
+				while (i < index - 1) {
 					tempNode = tempNode.nextNode;
 					i++;
 				}
@@ -67,7 +67,64 @@ public class ContactsList {
 		return indexOf(contact) != -1;
 	}
 
-	public int size(){
+	public boolean remove(int index) {
+		if (index >= 0 && index < size() && !isEmpty()) {
+			if (index == 0) {
+				return removeFirst();
+			}else{
+				Node tempNode = firstNode;
+				int i = 0;
+				while (i < index-1) {
+					tempNode = tempNode.nextNode;
+					i++;
+				}
+				tempNode.nextNode = tempNode.nextNode.nextNode;
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean removeFirst() {
+		if (!isEmpty()) {
+			firstNode = firstNode.nextNode;
+			return true;
+		}
+		return false;
+	}	
+
+	public boolean remove(Contact contact){
+		return remove(indexOf(contact));
+	}
+
+	public Contact getContact(int index){
+		if (index >= 0 && index < size() && !isEmpty()) {
+			Node tempNode = firstNode;
+			int i = 0;
+			while (i < index) {
+				tempNode = tempNode.nextNode;
+				i++;
+			}
+			return tempNode.contact;
+		}
+		return null;
+	}
+
+	public boolean setContact(int index, Contact contact){
+		if (index >= 0 && index < size() && !isEmpty()) {
+			Node tempNode = firstNode;
+			int i = 0;
+			while (i < index) {
+				tempNode = tempNode.nextNode;
+				i++;
+			}
+			tempNode.contact = contact;
+			return true;
+		}
+		return false;
+	}
+
+	public int size() {
 		int count = 0;
 		Node tempNode = firstNode;
 		while (tempNode != null) {
@@ -79,6 +136,30 @@ public class ContactsList {
 
 	public boolean isEmpty() {
 		return firstNode == null;
+	}
+
+	public String toString(){
+		Node tempNode = firstNode;
+		String contactData = "";
+		for (int i = 0; i < size(); i++) {
+			contactData += "["+tempNode.contact.toString()+"]\n";
+			tempNode = tempNode.nextNode;
+		}
+		return isEmpty()? "[empty]" : contactData;
+	}
+
+	public void printContactsList(){
+		System.out.println(toString());
+	}
+
+	public Contact[] toArray(){
+		Contact[] contactsArray = new Contact[size()];
+		Node tempNode = firstNode;
+		for (int i = 0; i < contactsArray.length; i++) {
+			contactsArray[i] = tempNode.contact;
+			tempNode = tempNode.nextNode;
+		}
+		return contactsArray;
 	}
 
 	public class Node {
