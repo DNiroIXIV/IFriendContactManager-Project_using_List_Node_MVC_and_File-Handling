@@ -8,6 +8,13 @@ public class TextFieldInputVerifier extends InputVerifier{
 			if(textField != null){
 				String text = textField.getText();
 				switch(textField.getName()){				
+					case "nameTextField" : 
+					case "companyTextField" : {
+						if (text.indexOf(';') != -1) {
+							JOptionPane.showMessageDialog(null,"Character ';' is not allowed!","Invalid Character Error!",JOptionPane.ERROR_MESSAGE);
+							return false;
+						}
+					}break;
 					case "contactNoTextField" : {
 						String validPhoneNumberFormat = "^0\\d{9}$";
 						String emptyField = "";

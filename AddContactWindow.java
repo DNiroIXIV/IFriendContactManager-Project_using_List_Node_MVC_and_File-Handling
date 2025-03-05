@@ -2,9 +2,6 @@ import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.text.*;
 
@@ -76,6 +73,7 @@ public class AddContactWindow extends JFrame {
 		txtName.setMargin(new Insets(5, 10, 5, 0));
 		txtName.setColumns(20);
 		txtName.setName("nameTextField");
+		txtName.setInputVerifier(new TextFieldInputVerifier());
 		namePanel.add(txtName);
 
 		midPanel.add(namePanel);
@@ -110,6 +108,7 @@ public class AddContactWindow extends JFrame {
 		txtCompanyName.setMargin(new Insets(5, 10, 5, 0));
 		txtCompanyName.setColumns(20);
 		txtCompanyName.setName("companyTextField");
+		txtCompanyName.setInputVerifier(new TextFieldInputVerifier());
 		companyNamePanel.add(txtCompanyName);
 
 		midPanel.add(companyNamePanel);
@@ -177,13 +176,21 @@ public class AddContactWindow extends JFrame {
 					String birthday = txtBirthday.getText();
 
 					Contact contact = new Contact(contactId, name, contactNumber, companyName, salary, birthday);
-					writeToFile(contact);
-
-					JOptionPane.showMessageDialog(null, "Contact Number Saved Successfully...", "Success",
-							JOptionPane.INFORMATION_MESSAGE);
-					clearTextFields();
-					txtContactId.setText(generateContactId());
-					txtName.requestFocusInWindow();
+					try {
+						boolean isAdded = ContactController.addContact(contact);
+						if (isAdded) {
+							JOptionPane.showMessageDialog(AddContactWindow.this, "Contact Number Saved Successfully...", "Success",
+									JOptionPane.INFORMATION_MESSAGE);
+							clearTextFields();
+							txtContactId.setText(generateContactId());
+						} else {
+							JOptionPane.showMessageDialog(AddContactWindow.this, "Contact Number Not Saved!", "Error!",
+									JOptionPane.ERROR_MESSAGE);
+						}
+						txtName.requestFocusInWindow();
+					} catch (IOException ex) {
+						//
+					}
 				}
 			}
 		});
@@ -232,33 +239,18 @@ public class AddContactWindow extends JFrame {
 	}
 
 	private String generateContactId() {
-		ContactsList contactsList = getContactsList();
-		if (contactsList.size() == 0) {
-			return "C0001";
-		}
-		Contact lastContact = contactsList.getContact(contactsList.size() - 1);
-		String lastContactId = lastContact.getContactId();
-		int lastContactIdNumber = Integer.parseInt(lastContactId.substring(1));
-		return String.format("C%04d", lastContactIdNumber + 1);
-	}
-
-	public ContactsList getContactsList() {
-		ContactsList contactsList = new ContactsList(100, 0.5);
 		try {
-			FileReader fileReader = new FileReader("Contact.txt");
-			BufferedReader bufferedReader = new BufferedReader(fileReader);
-			String lineString = bufferedReader.readLine();
-			while (lineString != null) {
-				String[] rowData = lineString.split(";");
-				Contact contact = new Contact(rowData[0], rowData[1], rowData[2], rowData[3], rowData[4], rowData[5]);
-				contactsList.add(contact);
-				lineString = bufferedReader.readLine();
+			Contact lastContact = ContactController.getLastContact();
+			if (lastContact == null) {
+				return "C0001";
 			}
-			bufferedReader.close();
-		} catch (Exception e) {
-			// insert error handling code if needed
-		}		
-		return contactsList;
+			String lastContactId = lastContact.getContactId();
+			int lastContactIdNumber = Integer.parseInt(lastContactId.substring(1));
+			return String.format("C%04d", (lastContactIdNumber + 1));
+		} catch (IOException ex) {
+			return "";
+			// handle exception
+		}
 	}
 
 	private JFormattedTextField getFormattedTextFieldWithMask(String maskFormat, char placeHolder) {
@@ -311,7 +303,7 @@ public class AddContactWindow extends JFrame {
 					case "companyTextField":
 					case "salaryTextField": {
 						if (text.isEmpty()) {
-							JOptionPane.showMessageDialog(null, labelNameList[i] + " field cannot be empty!",
+							JOptionPane.showMessageDialog(AddContactWindow.this, labelNameList[i] + " field cannot be empty!",
 									"Empty Field Error", JOptionPane.INFORMATION_MESSAGE);
 							textFieldList[i].requestFocusInWindow();
 							return true;
@@ -325,7 +317,7 @@ public class AddContactWindow extends JFrame {
 						}
 
 						if (text.equals(emptyField)) {
-							JOptionPane.showMessageDialog(null, labelNameList[i] + " field cannot be empty!",
+							JOptionPane.showMessageDialog(AddContactWindow.this, labelNameList[i] + " field cannot be empty!",
 									"Empty Field Error", JOptionPane.INFORMATION_MESSAGE);
 							textFieldList[i].requestFocusInWindow();
 							return true;
@@ -334,7 +326,7 @@ public class AddContactWindow extends JFrame {
 						break;
 					case "birthdayTextField": {
 						if (text.equals("____-__-__")) {
-							JOptionPane.showMessageDialog(null, labelNameList[i] + " field cannot be empty!",
+							JOptionPane.showMessageDialog(AddContactWindow.this, labelNameList[i] + " field cannot be empty!",
 									"Empty Field Error", JOptionPane.INFORMATION_MESSAGE);
 							textFieldList[i].requestFocusInWindow();
 							return true;
@@ -344,16 +336,5 @@ public class AddContactWindow extends JFrame {
 			}
 		}
 		return false;
-	}
-
-	private void writeToFile(Contact contact) {
-		String lineString = contact.toString()+"\n";
-		try {
-			FileWriter fileWriter = new FileWriter("Contact.txt", true);
-			fileWriter.write(lineString);
-			fileWriter.close();
-		} catch (IOException ex) {
-			// insert error handling code if needed
-		}
 	}
 }
