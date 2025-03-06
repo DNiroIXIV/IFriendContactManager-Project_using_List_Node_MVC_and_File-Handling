@@ -179,13 +179,11 @@ public class AddContactWindow extends JFrame {
 					try {
 						boolean isAdded = ContactController.addContact(contact);
 						if (isAdded) {
-							JOptionPane.showMessageDialog(AddContactWindow.this, "Contact Number Saved Successfully...", "Success",
-									JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(AddContactWindow.this, "Contact Number Saved Successfully...", "Success", JOptionPane.INFORMATION_MESSAGE);
 							clearTextFields();
 							txtContactId.setText(generateContactId());
 						} else {
-							JOptionPane.showMessageDialog(AddContactWindow.this, "Contact Number Not Saved!", "Error!",
-									JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(AddContactWindow.this, "Contact Number Not Saved!", "Error!", JOptionPane.ERROR_MESSAGE);
 						}
 						txtName.requestFocusInWindow();
 					} catch (IOException ex) {
@@ -303,8 +301,7 @@ public class AddContactWindow extends JFrame {
 					case "companyTextField":
 					case "salaryTextField": {
 						if (text.isEmpty()) {
-							JOptionPane.showMessageDialog(AddContactWindow.this, labelNameList[i] + " field cannot be empty!",
-									"Empty Field Error", JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(AddContactWindow.this, labelNameList[i] + " field cannot be empty!", "Empty Field Error", JOptionPane.INFORMATION_MESSAGE);
 							textFieldList[i].requestFocusInWindow();
 							return true;
 						}
@@ -317,8 +314,7 @@ public class AddContactWindow extends JFrame {
 						}
 
 						if (text.equals(emptyField)) {
-							JOptionPane.showMessageDialog(AddContactWindow.this, labelNameList[i] + " field cannot be empty!",
-									"Empty Field Error", JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(AddContactWindow.this, labelNameList[i] + " field cannot be empty!", "Empty Field Error", JOptionPane.INFORMATION_MESSAGE);							
 							textFieldList[i].requestFocusInWindow();
 							return true;
 						}
@@ -326,8 +322,7 @@ public class AddContactWindow extends JFrame {
 						break;
 					case "birthdayTextField": {
 						if (text.equals("____-__-__")) {
-							JOptionPane.showMessageDialog(AddContactWindow.this, labelNameList[i] + " field cannot be empty!",
-									"Empty Field Error", JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(AddContactWindow.this, labelNameList[i] + " field cannot be empty!", "Empty Field Error", JOptionPane.INFORMATION_MESSAGE);
 							textFieldList[i].requestFocusInWindow();
 							return true;
 						}

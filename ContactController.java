@@ -4,21 +4,21 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class ContactController {
-    public static boolean addContact(Contact contact) throws IOException{
-        FileWriter fileWriter = new FileWriter("Contact.txt",true);
-        fileWriter.write(contact.toString()+"\n");
+    public static boolean addContact(Contact contact) throws IOException {
+        FileWriter fileWriter = new FileWriter("Contact.txt", true);
+        fileWriter.write(contact.toString() + "\n");
         fileWriter.close();
         return true;
     }
 
-    public static ContactsList getContactsList() throws IOException{
+    public static ContactsList getContactsList() throws IOException {
         ContactsList contactsList = new ContactsList();
         FileReader fileReader = new FileReader("Contact.txt");
         BufferedReader bufferedReader = new BufferedReader(fileReader);
         String contactData = bufferedReader.readLine();
         while (contactData != null) {
             String[] rowData = contactData.split(";");
-            Contact contact= new Contact(rowData[0],rowData[1],rowData[2],rowData[3],rowData[4],rowData[5]);
+            Contact contact = new Contact(rowData[0], rowData[1], rowData[2], rowData[3], rowData[4], rowData[5]);
             contactsList.add(contact);
             contactData = bufferedReader.readLine();
         }
@@ -26,8 +26,20 @@ public class ContactController {
         return contactsList;
     }
 
-    public static Contact getLastContact() throws IOException{
+    public static Contact getLastContact() throws IOException {
         ContactsList contactsList = getContactsList();
-        return contactsList.getContact(contactsList.size()-1);
+        return contactsList.getContact(contactsList.size() - 1);
+    }
+
+    public static Contact searchByNameOrContactNo(String nameOrContactNo) throws IOException{
+        ContactsList contactsList = getContactsList();
+        Contact dummyContact = new Contact(null,nameOrContactNo,nameOrContactNo,null,null,null);
+        for (int i = 0; i < contactsList.size(); i++) {
+            Contact contact = contactsList.getContact(i);            
+            if (contact.isNameEquals(dummyContact) || contact.isContactNumberEquals(dummyContact)) {
+                return contact;
+            }
+        }
+        return null;
     }
 }

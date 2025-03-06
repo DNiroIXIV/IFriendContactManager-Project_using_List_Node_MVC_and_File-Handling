@@ -139,12 +139,7 @@ public class IFriendContactManager extends JFrame {
 	}
 
 	private static IFriendContactManager homePageWindow = null;
-	private static ViewContactsWindow viewContactWindow = null;
-
-	public static void main(String[] args) {
-		homePageWindow = new IFriendContactManager();
-		viewContactWindow = new ViewContactsWindow();
-	}
+	private static ViewContactsWindow viewContactWindow = null;	
 
 	public static IFriendContactManager getHomePageWindow() {
 		return homePageWindow;
@@ -152,6 +147,11 @@ public class IFriendContactManager extends JFrame {
 
 	public static ViewContactsWindow getViewContactsWindow() {
 		return viewContactWindow;
+	}
+
+	public static void main(String[] args) {
+		homePageWindow = new IFriendContactManager();
+		viewContactWindow = new ViewContactsWindow();
 	}
 }
 
