@@ -371,6 +371,7 @@ public class UpdateContactWindow extends JFrame {
 			maskFormatter.setPlaceholderCharacter(placeHolder);
 			formattedTextField = new JFormattedTextField(maskFormatter);
 		} catch (ParseException ex) {
+			// handle exception
 		}
 		return formattedTextField;
 	}

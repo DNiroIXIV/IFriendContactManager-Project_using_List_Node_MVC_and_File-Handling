@@ -54,6 +54,17 @@ public class ContactController {
         return false;
     }
 
+    public static boolean deleteContact(String contactId) throws IOException{
+        ContactsList contactsList = getContactsList();
+        int index = contactsList.indexOf(new Contact(contactId,null,null,null,null,null));
+        if (index != -1) {
+            boolean isRemoved = contactsList.remove(index);
+            writeToFile(isRemoved, contactsList);
+            return isRemoved;
+        }
+        return false;
+    }
+
     public static void writeToFile(boolean isUpdatdOrDeleted, ContactsList contactsList) throws IOException{
         if (isUpdatdOrDeleted) {
             FileWriter fileWriter = new FileWriter("Contact.txt");

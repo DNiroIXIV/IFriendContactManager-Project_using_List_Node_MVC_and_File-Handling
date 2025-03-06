@@ -101,10 +101,10 @@ public class ListBySalaryWindow extends JFrame{
 			}
 		});
 		
-		Contact[] contactDbListedBySalary = listContactsBySalary();
+		Contact[] contactsListedBySalary = listContactsBySalary();
 		
-		for (int i = 0; i < contactDbListedBySalary.length; i++){
-			Contact contact = contactDbListedBySalary[i];
+		for (int i = 0; i < contactsListedBySalary.length; i++){
+			Contact contact = contactsListedBySalary[i];
 			Object[] rowData = contact.getContactDetails();
 			defaultTableModel.addRow(rowData);
 		}
@@ -113,16 +113,16 @@ public class ListBySalaryWindow extends JFrame{
 	}
 	
 	private Contact[] listContactsBySalary(){
-		Contact[] tempContactsArray = ListByNameWindow.listContactsByName();
+		Contact[] contactsArray = ListByNameWindow.listContactsByName();
 		
-		for (int i = tempContactsArray.length-1; i > 0; i--){
+		for (int i = contactsArray.length-1; i > 0; i--){
 			for (int j = 0; j < i; j++){
-				if(getDoubleValue(tempContactsArray[j]) > getDoubleValue(tempContactsArray[j+1])){
-					swapContacts(tempContactsArray, j);
+				if(getDoubleValue(contactsArray[j]) > getDoubleValue(contactsArray[j+1])){
+					swapContacts(contactsArray, j);
 				}				
 			}			
 		}		
-		return tempContactsArray;
+		return contactsArray;
 	}
 	
 	private double getDoubleValue(Contact contact){
@@ -131,9 +131,9 @@ public class ListBySalaryWindow extends JFrame{
 		return doubleValue;
 	}
 	
-	private void swapContacts(Contact[] tempContactsArray, int index){
-		Contact contact = tempContactsArray[index];
-		tempContactsArray[index] = tempContactsArray[index+1];
-		tempContactsArray[index+1] = contact;
+	private void swapContacts(Contact[] contactsArray, int index){
+		Contact contact = contactsArray[index];
+		contactsArray[index] = contactsArray[index+1];
+		contactsArray[index+1] = contact;
 	}
 }

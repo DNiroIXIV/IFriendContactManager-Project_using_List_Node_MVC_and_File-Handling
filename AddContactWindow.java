@@ -259,7 +259,7 @@ public class AddContactWindow extends JFrame {
 			maskFormatter.setPlaceholderCharacter(placeHolder);
 			formattedTextField = new JFormattedTextField(maskFormatter);
 		} catch (ParseException ex) {
-			// error handling code
+			// handle exception
 		}
 
 		return formattedTextField;

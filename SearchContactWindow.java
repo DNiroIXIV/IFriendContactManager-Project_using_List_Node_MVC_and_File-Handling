@@ -238,8 +238,7 @@ public class SearchContactWindow extends JFrame {
 	}
 
 	public JFormattedTextField[] getTextFieldList() {
-		JFormattedTextField[] textFieldList = { txtContactId, txtName, txtContactNumber, txtCompanyName, txtSalary,
-				txtBirthday };
+		JFormattedTextField[] textFieldList = { txtContactId, txtName, txtContactNumber, txtCompanyName, txtSalary, txtBirthday };
 		return textFieldList;
 	}
 

@@ -1,9 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 
 public class DeleteContactWindow extends JFrame {
@@ -26,8 +23,6 @@ public class DeleteContactWindow extends JFrame {
 	private JButton btnCancel;
 	private JButton btnBackToHomePage;
 	private JButton btnSearch;
-
-	private boolean isDeleted;
 
 	public DeleteContactWindow() {
 		setSize(1100, 750);
@@ -213,20 +208,18 @@ public class DeleteContactWindow extends JFrame {
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				String contactId = txtContactId.getText();
-				ContactsList contactsList = getContactsList();
-				int index = contactsList.indexOf(new Contact(contactId, null, null, null, null, null));
-				if (index != -1) {
-					isDeleted = contactsList.remove(index);
-					clearTextFields();
-					JOptionPane.showMessageDialog(null, "Contact Number Deleted Successfully...", "Success",
-							JOptionPane.INFORMATION_MESSAGE);
-					txtSearch.requestFocusInWindow();
-					for (int i = 0; i < contactsList.size(); i++) {
-						writeToFile(contactsList.getContact(i));
+				try {
+					boolean isDeleted = ContactController.deleteContact(contactId);
+					if (isDeleted) {
+						clearTextFields();
+						JOptionPane.showMessageDialog(DeleteContactWindow.this, "Contact Deleted Successfully...", "Success", JOptionPane.INFORMATION_MESSAGE);						
+					} else {
+						JOptionPane.showMessageDialog(DeleteContactWindow.this, "Contact \"" + txtSearch.getText() + "\" Deletion Failed!", "Error", JOptionPane.ERROR_MESSAGE);
 					}
-				} else {
-					JOptionPane.showMessageDialog(null, "Contact \"" + txtSearch.getText() + "\" does not exist!", "Error", JOptionPane.ERROR_MESSAGE);
+				} catch (IOException ex) {
+					// handle exception
 				}
+				txtSearch.requestFocusInWindow();
 			}
 		});
 		upperPanel.add(btnDelete);
@@ -273,8 +266,7 @@ public class DeleteContactWindow extends JFrame {
 	}
 
 	public JFormattedTextField[] getTextFieldList() {
-		JFormattedTextField[] textFieldList = { txtContactId, txtName, txtContactNumber, txtCompanyName, txtSalary,
-				txtBirthday };
+		JFormattedTextField[] textFieldList = { txtContactId, txtName, txtContactNumber, txtCompanyName, txtSalary, txtBirthday };
 		return textFieldList;
 	}
 
@@ -298,20 +290,20 @@ public class DeleteContactWindow extends JFrame {
 
 	public void loadContactDetails() {
 		String searchText = txtSearch.getText();
-		ContactsList contactList = getContactsList();
-		int index = contactList.searchByNameOrContactNo(new Contact(null, searchText, searchText, null, null, null));
-
-		if (index != -1) {
-			Contact contact = contactList.getContact(index);
-			txtContactId.setText(contact.getContactId());
-			txtName.setText(contact.getName());
-			txtContactNumber.setText(contact.getContactNumber());
-			txtCompanyName.setText(contact.getCompanyName());
-			txtSalary.setText(contact.getSalary());
-			txtBirthday.setText(contact.getBirthday());
-		} else {
-			JOptionPane.showMessageDialog(null, "Contact \"" + searchText + "\" could not be found!", "",
-					JOptionPane.INFORMATION_MESSAGE);
+		try {
+			Contact contact = ContactController.searchByNameOrContactNo(searchText);
+			if (contact != null) {
+				txtContactId.setText(contact.getContactId());
+				txtName.setText(contact.getName());
+				txtContactNumber.setText(contact.getContactNumber());
+				txtCompanyName.setText(contact.getCompanyName());
+				txtSalary.setText(contact.getSalary());
+				txtBirthday.setText(contact.getBirthday());
+			} else {
+				JOptionPane.showMessageDialog(DeleteContactWindow.this, "Contact \"" + searchText + "\" could not be found!", "", JOptionPane.INFORMATION_MESSAGE);
+			}
+		} catch (IOException ex) {
+			// handle exception
 		}
 	}
 }

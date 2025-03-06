@@ -101,10 +101,10 @@ public class ListByBirthdayWindow extends JFrame{
 			}
 		});
 		
-		Contact[] contactDbListedByBirthaday = listContactsByBirthday();
+		Contact[] contactsListedByBirthaday = listContactsByBirthday();
 		
-		for (int i = 0; i < contactDbListedByBirthaday.length; i++){
-			Contact contact = contactDbListedByBirthaday[i];
+		for (int i = 0; i < contactsListedByBirthaday.length; i++){
+			Contact contact = contactsListedByBirthaday[i];
 			Object[] rowData = contact.getContactDetails();
 			defaultTableModel.addRow(rowData);
 		}
@@ -113,22 +113,22 @@ public class ListByBirthdayWindow extends JFrame{
 	}
 	
 	private Contact[] listContactsByBirthday(){
-		Contact[] tempContactsArray = ListByNameWindow.listContactsByName();
+		Contact[] contactsArray = ListByNameWindow.listContactsByName();
 		
-		for (int i = tempContactsArray.length-1; i > 0; i--){
+		for (int i = contactsArray.length-1; i > 0; i--){
 			for (int j = 0; j < i; j++){
-				int valueOfCompareTo = tempContactsArray[j].birthdayCompareTo(tempContactsArray[j+1]);
+				int valueOfCompareTo = contactsArray[j].birthdayCompareTo(contactsArray[j+1]);
 				if(valueOfCompareTo > 0){
-					swapContacts(tempContactsArray, j);
+					swapContacts(contactsArray, j);
 				}				
 			}			
 		}		
-		return tempContactsArray;
+		return contactsArray;
 	}
 	
-	private void swapContacts(Contact[] tempContactsArray, int index){
-		Contact contact = tempContactsArray[index];
-		tempContactsArray[index] = tempContactsArray[index+1];
-		tempContactsArray[index+1] = contact;
+	private void swapContacts(Contact[] contactsArray, int index){
+		Contact contact = contactsArray[index];
+		contactsArray[index] = contactsArray[index+1];
+		contactsArray[index+1] = contact;
 	}
 }
