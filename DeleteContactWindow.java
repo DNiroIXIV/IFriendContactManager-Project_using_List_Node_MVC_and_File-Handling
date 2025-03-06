@@ -314,40 +314,4 @@ public class DeleteContactWindow extends JFrame {
 					JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
-
-	public ContactsList getContactsList() {
-		ContactsList contactsList = new ContactsList(100, 0.5);
-		try {
-			FileReader fileReader = new FileReader("Contact.txt");
-			BufferedReader bufferedReader = new BufferedReader(fileReader);
-			String lineString = bufferedReader.readLine();
-			while (lineString != null) {
-				String[] rowData = lineString.split(";");
-				Contact contact = new Contact(rowData[0], rowData[1], rowData[2], rowData[3], rowData[4], rowData[5]);
-				contactsList.add(contact);
-				lineString = bufferedReader.readLine();
-			}
-			bufferedReader.close();
-		} catch (Exception e) {
-			// insert error handling code if needed
-		}
-		return contactsList;
-	}
-
-	private void writeToFile(Contact contact) {
-		String lineString = contact.toString()+"\n";
-		try {
-			FileWriter fileWriter = null;
-			if (isDeleted) {				
-				fileWriter = new FileWriter("Contact.txt");				
-				isDeleted = false;
-			} else {
-				fileWriter = new FileWriter("Contact.txt",true);
-			}
-			fileWriter.write(lineString);
-			fileWriter.close();
-		} catch (IOException ex) {
-			// insert error handling code if needed
-		}
-	}
 }

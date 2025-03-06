@@ -179,11 +179,11 @@ public class AddContactWindow extends JFrame {
 					try {
 						boolean isAdded = ContactController.addContact(contact);
 						if (isAdded) {
-							JOptionPane.showMessageDialog(AddContactWindow.this, "Contact Number Saved Successfully...", "Success", JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(AddContactWindow.this, "Contact Saved Successfully...", "Success", JOptionPane.INFORMATION_MESSAGE);
 							clearTextFields();
 							txtContactId.setText(generateContactId());
 						} else {
-							JOptionPane.showMessageDialog(AddContactWindow.this, "Contact Number Not Saved!", "Error!", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(AddContactWindow.this, "Contact Not Saved!", "Error!", JOptionPane.ERROR_MESSAGE);
 						}
 						txtName.requestFocusInWindow();
 					} catch (IOException ex) {

@@ -81,4 +81,3 @@ public class ViewContactsWindow extends JFrame{
 		});
 	}
 }
-

@@ -137,4 +137,3 @@ public class ListBySalaryWindow extends JFrame{
 		tempContactsArray[index+1] = contact;
 	}
 }
-

@@ -159,4 +159,3 @@ public class ListByNameWindow extends JFrame{
 		tempContactsArray[index+1] = contact;
 	}
 }
-

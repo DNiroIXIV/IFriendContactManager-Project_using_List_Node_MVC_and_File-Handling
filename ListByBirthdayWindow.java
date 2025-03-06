@@ -132,4 +132,3 @@ public class ListByBirthdayWindow extends JFrame{
 		tempContactsArray[index+1] = contact;
 	}
 }
-

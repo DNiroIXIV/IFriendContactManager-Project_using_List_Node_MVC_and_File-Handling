@@ -31,15 +31,36 @@ public class ContactController {
         return contactsList.getContact(contactsList.size() - 1);
     }
 
-    public static Contact searchByNameOrContactNo(String nameOrContactNo) throws IOException{
+    public static Contact searchByNameOrContactNo(String nameOrContactNo) throws IOException {
         ContactsList contactsList = getContactsList();
-        Contact dummyContact = new Contact(null,nameOrContactNo,nameOrContactNo,null,null,null);
+        Contact dummyContact = new Contact(null, nameOrContactNo, nameOrContactNo, null, null, null);
         for (int i = 0; i < contactsList.size(); i++) {
-            Contact contact = contactsList.getContact(i);            
+            Contact contact = contactsList.getContact(i);
             if (contact.isNameEquals(dummyContact) || contact.isContactNumberEquals(dummyContact)) {
                 return contact;
             }
         }
         return null;
+    }
+
+    public static boolean updateContact(Contact contact) throws IOException {
+        ContactsList contactsList = getContactsList();
+        int index = contactsList.indexOf(contact);
+        if (index != -1) {
+            boolean isSet = contactsList.setContact(index, contact);
+            writeToFile(isSet, contactsList);
+            return isSet;
+        }
+        return false;
+    }
+
+    public static void writeToFile(boolean isUpdatdOrDeleted, ContactsList contactsList) throws IOException{
+        if (isUpdatdOrDeleted) {
+            FileWriter fileWriter = new FileWriter("Contact.txt");
+            for (int i = 0; i < contactsList.size(); i++) {
+                fileWriter.write(contactsList.getContact(i).toString() + "\n");
+            }
+            fileWriter.close();
+        }
     }
 }
